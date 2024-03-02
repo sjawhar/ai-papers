@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  dev:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        AI_PAPERS_DEVICE: ${AI_PAPERS_DEVCONTAINER_DEVICE:-gpu}
+    image: sjawhar/ai-papers:dev
+    runtime: ${AI_PAPERS_DEVCONTAINER_RUNTIME:-nvidia}
+    volumes:
+      - ..:/home/ai-papers/app:cached
+      - dvc_cache:/home/ai-papers/app/.dvc/cache
+      - ${HOME}/.aws:/home/ai-papers/.aws
+    command: [sleep, infinity]
+
+volumes:
+  dvc_cache:
