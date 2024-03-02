@@ -1,0 +1,12 @@
+md5: e18f55e5c91f4cf06d50ffadf2dbd6d2
+frozen: true
+deps:
+- path: config.json
+  repo:
+    url: https://huggingface.co/openai-community/gpt2
+    rev_lock: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+outs:
+- md5: 6e1dba197b511b8759d6ad4551095a29
+  size: 665
+  hash: md5
+  path: config.json

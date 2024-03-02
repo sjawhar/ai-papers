@@ -1,0 +1,7 @@
+*
+!poetry.lock
+!pyproject.toml
+!README.md
+
+!ai_papers/**/*.py
+!test/**/*.py

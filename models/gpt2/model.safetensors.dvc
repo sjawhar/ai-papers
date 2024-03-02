@@ -1,0 +1,12 @@
+md5: 2234b2173d41ca4460c5a26b2f0798ca
+frozen: true
+deps:
+- path: model.safetensors
+  repo:
+    url: https://huggingface.co/openai-community/gpt2
+    rev_lock: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+outs:
+- md5: 8b9634194d1029deff7964617b8bcc75
+  size: 548105171
+  hash: md5
+  path: model.safetensors

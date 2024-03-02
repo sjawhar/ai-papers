@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "ai-papers"
+version = "0.1.0"
+description = ""
+authors = ["Sami Jawhar <sami@thecybermonk.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+
+dspy-ai = "^2.0.4"
+dvc = {extras = ["s3"], version = "^3.48.1"}
+langchain = "^0.1.10"
+openai = "1.13.3"
+pydantic = "^2.6.3"
+safetensors = "^0.4.2"
+torch = "^2.2.1"
+transformers = "^4.38.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+isort = "^5.13.2"
+pytest = "^8.0.2"
+pytest-mock = "^3.12.0"
+pytest-watch = "^4.2.0"
+unimport = "^1.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
