@@ -39,9 +39,9 @@ def main(
         params: dict[str, Any] = yaml.load(file)["evaluate"]
 
     click.echo(f"Loading data from {data_file}")
-    y_true = pd.read_json(data_file, lines=True)["label"].astype(bool)
+    y_true = pd.read_json(data_file, lines=True)["label"]
     click.echo(f"Loading predictions from {preds_file}")
-    y_pred = pd.read_json(preds_file, lines=True)["label"].astype(bool)
+    y_pred = pd.read_json(preds_file, lines=True)["label"]
     metrics = {
         "accuracy": sklearn.metrics.accuracy_score(y_true, y_pred),
         "precision": sklearn.metrics.precision_score(y_true, y_pred),

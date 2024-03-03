@@ -23,17 +23,17 @@ stages:
       md5: a90ada95fddaa1e5a0c30fcf3362490f
       size: 8012
   generate@train:
-    cmd: python ai_papers/generate.py data/raw/train.jsonl prompts/baseline.txt models/gpt2
-      preds/train.jsonl
+    cmd: python ai_papers/generate.py data/processed/train.jsonl prompts/baseline.txt
+      models/gpt2 preds/train.jsonl
     deps:
     - path: ai_papers/generate.py
       hash: md5
-      md5: 7a5e2263da1f01b6e6cd29e35c03886b
-      size: 2570
-    - path: data/raw/train.jsonl
+      md5: f408fcfa7df2cc7007f149a3388c4922
+      size: 2544
+    - path: data/processed/train.jsonl
       hash: md5
-      md5: 69137282d82b058a556160d0d6f4ffce
-      size: 511322
+      md5: 0aec493393916c8ad820a123c3a89535
+      size: 497491
     - path: models/gpt2
       hash: md5
       md5: 76a8161fc294384c3209836fbc9da1f4.dir
@@ -53,17 +53,17 @@ stages:
       md5: 6b80893e706a2159e53356e0947acd1f
       size: 15500
   generate@dev:
-    cmd: python ai_papers/generate.py data/raw/dev.jsonl prompts/baseline.txt models/gpt2
-      preds/dev.jsonl
+    cmd: python ai_papers/generate.py data/processed/dev.jsonl prompts/baseline.txt
+      models/gpt2 preds/dev.jsonl
     deps:
     - path: ai_papers/generate.py
       hash: md5
-      md5: 7a5e2263da1f01b6e6cd29e35c03886b
-      size: 2570
-    - path: data/raw/dev.jsonl
+      md5: f408fcfa7df2cc7007f149a3388c4922
+      size: 2544
+    - path: data/processed/dev.jsonl
       hash: md5
-      md5: 5814c1b636812b06e8db5c2a4b591b01
-      size: 534753
+      md5: d8967691f1246d01bab623e6461724ee
+      size: 520924
     - path: models/gpt2
       hash: md5
       md5: 76a8161fc294384c3209836fbc9da1f4.dir
@@ -83,17 +83,17 @@ stages:
       md5: 5c44d521f214d89514f525d047821a71
       size: 15500
   generate@test:
-    cmd: python ai_papers/generate.py data/raw/test.jsonl prompts/baseline.txt models/gpt2
-      preds/test.jsonl
+    cmd: python ai_papers/generate.py data/processed/test.jsonl prompts/baseline.txt
+      models/gpt2 preds/test.jsonl
     deps:
     - path: ai_papers/generate.py
       hash: md5
-      md5: 7a5e2263da1f01b6e6cd29e35c03886b
-      size: 2570
-    - path: data/raw/test.jsonl
+      md5: f408fcfa7df2cc7007f149a3388c4922
+      size: 2544
+    - path: data/processed/test.jsonl
       hash: md5
-      md5: 394eb9be16db05a26fc546fe92ee792b
-      size: 506288
+      md5: 0c6959845f7d1e54b1acf6876d8dba8c
+      size: 490468
     - path: models/gpt2
       hash: md5
       md5: 76a8161fc294384c3209836fbc9da1f4.dir
@@ -113,17 +113,17 @@ stages:
       md5: 6cce7c8238d7d12ab9e2fda730891fb7
       size: 15500
   evaluate@train:
-    cmd: python ai_papers/evaluate.py --params-file=params.yaml data/raw/train.jsonl
+    cmd: python ai_papers/evaluate.py --params-file=params.yaml data/processed/train.jsonl
       preds/train.jsonl metrics/train.yaml
     deps:
     - path: ai_papers/evaluate.py
       hash: md5
-      md5: 7e218ca6366bf39970a700f7bac6576c
-      size: 1907
-    - path: data/raw/train.jsonl
+      md5: cd4ae8c117882b1c7eb94e05e17001dd
+      size: 1881
+    - path: data/processed/train.jsonl
       hash: md5
-      md5: 69137282d82b058a556160d0d6f4ffce
-      size: 511322
+      md5: 0aec493393916c8ad820a123c3a89535
+      size: 497491
     - path: preds/train.jsonl
       hash: md5
       md5: 6b80893e706a2159e53356e0947acd1f
@@ -135,20 +135,20 @@ stages:
     outs:
     - path: metrics/train.yaml
       hash: md5
-      md5: b9910a9623c68669f590357274605a10
-      size: 56
+      md5: 0c1e272ae6185da21a87da1569eee66d
+      size: 62
   evaluate@dev:
-    cmd: python ai_papers/evaluate.py --params-file=params.yaml data/raw/dev.jsonl
+    cmd: python ai_papers/evaluate.py --params-file=params.yaml data/processed/dev.jsonl
       preds/dev.jsonl metrics/dev.yaml
     deps:
     - path: ai_papers/evaluate.py
       hash: md5
-      md5: 7e218ca6366bf39970a700f7bac6576c
-      size: 1907
-    - path: data/raw/dev.jsonl
+      md5: cd4ae8c117882b1c7eb94e05e17001dd
+      size: 1881
+    - path: data/processed/dev.jsonl
       hash: md5
-      md5: 5814c1b636812b06e8db5c2a4b591b01
-      size: 534753
+      md5: d8967691f1246d01bab623e6461724ee
+      size: 520924
     - path: preds/dev.jsonl
       hash: md5
       md5: 5c44d521f214d89514f525d047821a71
@@ -160,5 +160,53 @@ stages:
     outs:
     - path: metrics/dev.yaml
       hash: md5
-      md5: 0e076840c0076c5f9d9d42ddef94687d
-      size: 55
+      md5: 5a364f9bf1f58f79e18e81c4c15b6472
+      size: 59
+  process_data@train:
+    cmd: python ai_papers/process_data.py data/raw/train.jsonl data/processed/train.jsonl
+    deps:
+    - path: ai_papers/process_data.py
+      hash: md5
+      md5: 7670d5fe7833ff6dc4a89fd5bf228451
+      size: 1034
+    - path: data/raw/train.jsonl
+      hash: md5
+      md5: 69137282d82b058a556160d0d6f4ffce
+      size: 511322
+    outs:
+    - path: data/processed/train.jsonl
+      hash: md5
+      md5: 0aec493393916c8ad820a123c3a89535
+      size: 497491
+  process_data@dev:
+    cmd: python ai_papers/process_data.py data/raw/dev.jsonl data/processed/dev.jsonl
+    deps:
+    - path: ai_papers/process_data.py
+      hash: md5
+      md5: 7670d5fe7833ff6dc4a89fd5bf228451
+      size: 1034
+    - path: data/raw/dev.jsonl
+      hash: md5
+      md5: 5814c1b636812b06e8db5c2a4b591b01
+      size: 534753
+    outs:
+    - path: data/processed/dev.jsonl
+      hash: md5
+      md5: d8967691f1246d01bab623e6461724ee
+      size: 520924
+  process_data@test:
+    cmd: python ai_papers/process_data.py data/raw/test.jsonl data/processed/test.jsonl
+    deps:
+    - path: ai_papers/process_data.py
+      hash: md5
+      md5: 7670d5fe7833ff6dc4a89fd5bf228451
+      size: 1034
+    - path: data/raw/test.jsonl
+      hash: md5
+      md5: 394eb9be16db05a26fc546fe92ee792b
+      size: 506288
+    outs:
+    - path: data/processed/test.jsonl
+      hash: md5
+      md5: 0c6959845f7d1e54b1acf6876d8dba8c
+      size: 490468

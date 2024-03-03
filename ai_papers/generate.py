@@ -57,9 +57,10 @@ def main(
     responses = []
     with jsonlines.open(data_file) as reader:
         for prompt_data in tqdm.tqdm(reader):
-            title, _, abstract = str(prompt_data["text"]).partition(".")
             prompt = prompt_template.render(
-                title=title.strip(), abstract=abstract.strip(), question=_QUESTION
+                title=prompt_data["title"],
+                abstract=prompt_data["abstract"],
+                question=_QUESTION,
             )
             inputs = tokenizer(prompt, return_tensors="pt")
             outputs: CausalLMOutput = model(
