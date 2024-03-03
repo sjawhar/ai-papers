@@ -1,5 +1,17 @@
-model: gpt2
-prompt: baseline
+answers:
+  positive: "Yes"
+  negative: "No"
 
+make_examples:
+  num_examples: 4
+  random_seed: 42
+
+generate:
+  instruction: >-
+    Classify the following examples based on whether they are
+    AI-relevant or not:
+  model: gpt2
+  prompt: baseline
+  stop_token: '\n'
 evaluate:
   precision: 5

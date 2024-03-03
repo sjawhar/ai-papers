@@ -7,28 +7,46 @@ stages:
       data/raw/${item.dataset}.jsonl
       data/processed/${item.dataset}.jsonl
     deps:
-      - data/raw/${item.dataset}.jsonl
       - ai_papers/process_data.py
+      - data/raw/${item.dataset}.jsonl
     outs:
       - data/processed/${item.dataset}.jsonl
+
+  make_examples:
+    cmd: >-
+      python ai_papers/make_examples.py
+      --params-file=params.yaml
+      data/processed/train.jsonl
+      data/processed/examples.jsonl
+    deps:
+      - ai_papers/make_examples.py
+      - data/processed/train.jsonl
+    params:
+      - answers
+      - make_examples
+    outs:
+      - data/processed/examples.jsonl
 
   generate:
     matrix:
       dataset: [train, dev, test]
     cmd: >-
       python ai_papers/generate.py
+      --params-file=params.yaml
+      --examples-file=data/processed/examples.jsonl
       data/processed/${item.dataset}.jsonl
-      prompts/${prompt}.txt
-      models/${model}
+      prompts/${generate.prompt}.txt
+      models/${generate.model}
       preds/${item.dataset}.jsonl
     deps:
-      - data/processed/${item.dataset}.jsonl
-      - models/${model}
-      - prompts/${prompt}.txt
       - ai_papers/generate.py
+      - data/processed/${item.dataset}.jsonl
+      - data/processed/examples.jsonl
+      - models/${generate.model}
+      - prompts/${generate.prompt}.txt
     params:
-      - model
-      - prompt
+      - answers
+      - generate
     outs:
       - preds/${item.dataset}.jsonl
 
@@ -42,9 +60,9 @@ stages:
       preds/${item.dataset}.jsonl
       metrics/${item.dataset}.yaml
     deps:
+      - ai_papers/evaluate.py
       - data/processed/${item.dataset}.jsonl
       - preds/${item.dataset}.jsonl
-      - ai_papers/evaluate.py
     params:
       - evaluate
     metrics:

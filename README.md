@@ -13,5 +13,8 @@ My goal with this project is to strike a balance between demonstrating strong NL
 1310-1429 - Repo setup
 1816-2013 - Task 1 - Test stage
 
+03 Mar
+1135-1536 - Task 1 - Evaluation and few-shot prompt
+
 ## References
 - Reppert, J., Rachbach, B., George, C., Stebbing, L., Byun, J., Appleton, M., & Stuhlmüller, A. (2023). Iterated decomposition: Improving science q&a by supervising reasoning processes. _arXiv preprint arXiv:2301.01751_.

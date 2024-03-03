@@ -1,6 +1,9 @@
-Answer the question "{{question}}" based on the title and abstract of a research paper.
-Answer either "yes", "no", or "I don't know" if you can't decide.
-Paper title: {{title}}
-Paper abstract: {{abstract}}
-Question: {{question}}
+{{instruction}}
+--{% for example in examples %}
+Title: {{ example.title }}
+Abstract: {{ example.abstract }}
+Answer: {{ example.answer }}
+--{% endfor %}
+Title: {{ title }}
+Abstract: {{ abstract }}
 Answer:
