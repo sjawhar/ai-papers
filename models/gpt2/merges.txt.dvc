@@ -1,0 +1,12 @@
+md5: 51dbc50cd44d1517642424794b53f66d
+frozen: true
+deps:
+- path: merges.txt
+  repo:
+    url: https://huggingface.co/openai-community/gpt2
+    rev_lock: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+outs:
+- md5: 75a37753dd7a28a2c5df80c28bf06e4e
+  size: 456318
+  hash: md5
+  path: merges.txt

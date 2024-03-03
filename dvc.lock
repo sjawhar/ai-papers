@@ -1,0 +1,24 @@
+schema: '2.0'
+stages:
+  test:
+    cmd: python ai_papers/test.py data/raw/test.jsonl prompts/baseline.txt models/gpt2
+      preds/gpt2/baseline.jsonl
+    deps:
+    - path: data/raw/test.jsonl
+      hash: md5
+      md5: 394eb9be16db05a26fc546fe92ee792b
+      size: 506288
+    - path: models/gpt2
+      hash: md5
+      md5: 76a8161fc294384c3209836fbc9da1f4.dir
+      size: 550961491
+      nfiles: 12
+    - path: prompts/baseline.txt
+      hash: md5
+      md5: 46f57b44f71c20954e3ce4405746b527
+      size: 237
+    outs:
+    - path: preds/gpt2/baseline.jsonl
+      hash: md5
+      md5: a90ada95fddaa1e5a0c30fcf3362490f
+      size: 8012

@@ -1,0 +1,14 @@
+stages:
+  test:
+    cmd: >-
+      python ai_papers/test.py
+      data/raw/test.jsonl
+      prompts/baseline.txt
+      models/gpt2
+      preds/gpt2/baseline.jsonl
+    deps:
+      - data/raw/test.jsonl
+      - prompts/baseline.txt
+      - models/gpt2
+    outs:
+      - preds/gpt2/baseline.jsonl

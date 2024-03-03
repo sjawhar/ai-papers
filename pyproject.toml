@@ -8,14 +8,18 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.11,<3.13"
 
+click = "*"
 dspy-ai = "^2.0.4"
-dvc = {extras = ["s3"], version = "^3.48.1"}
+dvc = { extras = ["gdrive", "s3"], version = "^3.48.1" }
+jinja2 = "*"
+jsonlines = "*"
 langchain = "^0.1.10"
 openai = "1.13.3"
 pydantic = "^2.6.3"
 safetensors = "^0.4.2"
 torch = "^2.2.1"
 transformers = "^4.38.2"
+tiktoken = "*"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"
