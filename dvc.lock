@@ -22,3 +22,143 @@ stages:
       hash: md5
       md5: a90ada95fddaa1e5a0c30fcf3362490f
       size: 8012
+  generate@train:
+    cmd: python ai_papers/generate.py data/raw/train.jsonl prompts/baseline.txt models/gpt2
+      preds/train.jsonl
+    deps:
+    - path: ai_papers/generate.py
+      hash: md5
+      md5: 7a5e2263da1f01b6e6cd29e35c03886b
+      size: 2570
+    - path: data/raw/train.jsonl
+      hash: md5
+      md5: 69137282d82b058a556160d0d6f4ffce
+      size: 511322
+    - path: models/gpt2
+      hash: md5
+      md5: 76a8161fc294384c3209836fbc9da1f4.dir
+      size: 550961491
+      nfiles: 12
+    - path: prompts/baseline.txt
+      hash: md5
+      md5: 46f57b44f71c20954e3ce4405746b527
+      size: 237
+    params:
+      params.yaml:
+        model: gpt2
+        prompt: baseline
+    outs:
+    - path: preds/train.jsonl
+      hash: md5
+      md5: 6b80893e706a2159e53356e0947acd1f
+      size: 15500
+  generate@dev:
+    cmd: python ai_papers/generate.py data/raw/dev.jsonl prompts/baseline.txt models/gpt2
+      preds/dev.jsonl
+    deps:
+    - path: ai_papers/generate.py
+      hash: md5
+      md5: 7a5e2263da1f01b6e6cd29e35c03886b
+      size: 2570
+    - path: data/raw/dev.jsonl
+      hash: md5
+      md5: 5814c1b636812b06e8db5c2a4b591b01
+      size: 534753
+    - path: models/gpt2
+      hash: md5
+      md5: 76a8161fc294384c3209836fbc9da1f4.dir
+      size: 550961491
+      nfiles: 12
+    - path: prompts/baseline.txt
+      hash: md5
+      md5: 46f57b44f71c20954e3ce4405746b527
+      size: 237
+    params:
+      params.yaml:
+        model: gpt2
+        prompt: baseline
+    outs:
+    - path: preds/dev.jsonl
+      hash: md5
+      md5: 5c44d521f214d89514f525d047821a71
+      size: 15500
+  generate@test:
+    cmd: python ai_papers/generate.py data/raw/test.jsonl prompts/baseline.txt models/gpt2
+      preds/test.jsonl
+    deps:
+    - path: ai_papers/generate.py
+      hash: md5
+      md5: 7a5e2263da1f01b6e6cd29e35c03886b
+      size: 2570
+    - path: data/raw/test.jsonl
+      hash: md5
+      md5: 394eb9be16db05a26fc546fe92ee792b
+      size: 506288
+    - path: models/gpt2
+      hash: md5
+      md5: 76a8161fc294384c3209836fbc9da1f4.dir
+      size: 550961491
+      nfiles: 12
+    - path: prompts/baseline.txt
+      hash: md5
+      md5: 46f57b44f71c20954e3ce4405746b527
+      size: 237
+    params:
+      params.yaml:
+        model: gpt2
+        prompt: baseline
+    outs:
+    - path: preds/test.jsonl
+      hash: md5
+      md5: 6cce7c8238d7d12ab9e2fda730891fb7
+      size: 15500
+  evaluate@train:
+    cmd: python ai_papers/evaluate.py --params-file=params.yaml data/raw/train.jsonl
+      preds/train.jsonl metrics/train.yaml
+    deps:
+    - path: ai_papers/evaluate.py
+      hash: md5
+      md5: 7e218ca6366bf39970a700f7bac6576c
+      size: 1907
+    - path: data/raw/train.jsonl
+      hash: md5
+      md5: 69137282d82b058a556160d0d6f4ffce
+      size: 511322
+    - path: preds/train.jsonl
+      hash: md5
+      md5: 6b80893e706a2159e53356e0947acd1f
+      size: 15500
+    params:
+      params.yaml:
+        evaluate:
+          precision: 5
+    outs:
+    - path: metrics/train.yaml
+      hash: md5
+      md5: b9910a9623c68669f590357274605a10
+      size: 56
+  evaluate@dev:
+    cmd: python ai_papers/evaluate.py --params-file=params.yaml data/raw/dev.jsonl
+      preds/dev.jsonl metrics/dev.yaml
+    deps:
+    - path: ai_papers/evaluate.py
+      hash: md5
+      md5: 7e218ca6366bf39970a700f7bac6576c
+      size: 1907
+    - path: data/raw/dev.jsonl
+      hash: md5
+      md5: 5814c1b636812b06e8db5c2a4b591b01
+      size: 534753
+    - path: preds/dev.jsonl
+      hash: md5
+      md5: 5c44d521f214d89514f525d047821a71
+      size: 15500
+    params:
+      params.yaml:
+        evaluate:
+          precision: 5
+    outs:
+    - path: metrics/dev.yaml
+      hash: md5
+      md5: 0e076840c0076c5f9d9d42ddef94687d
+      size: 55

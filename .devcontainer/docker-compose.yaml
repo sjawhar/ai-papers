@@ -7,7 +7,6 @@ services:
       args:
         AI_PAPERS_DEVICE: ${AI_PAPERS_DEVCONTAINER_DEVICE:-gpu}
     image: sjawhar/ai-papers:dev
-    network_mode: host
     runtime: ${AI_PAPERS_DEVCONTAINER_RUNTIME:-nvidia}
     volumes:
       - ..:/home/ai-papers/app:cached

@@ -1,14 +1,39 @@
 stages:
-  test:
+  generate:
+    matrix:
+      dataset: [train, dev, test]
     cmd: >-
-      python ai_papers/test.py
-      data/raw/test.jsonl
-      prompts/baseline.txt
-      models/gpt2
-      preds/gpt2/baseline.jsonl
+      python ai_papers/generate.py
+      data/raw/${item.dataset}.jsonl
+      prompts/${prompt}.txt
+      models/${model}
+      preds/${item.dataset}.jsonl
     deps:
-      - data/raw/test.jsonl
-      - prompts/baseline.txt
-      - models/gpt2
+      - data/raw/${item.dataset}.jsonl
+      - models/${model}
+      - prompts/${prompt}.txt
+      - ai_papers/generate.py
+    params:
+      - model
+      - prompt
     outs:
-      - preds/gpt2/baseline.jsonl
+      - preds/${item.dataset}.jsonl
+
+  evaluate:
+    matrix:
+      dataset: [train, dev]
+    cmd: >-
+      python ai_papers/evaluate.py
+      --params-file=params.yaml
+      data/raw/${item.dataset}.jsonl
+      preds/${item.dataset}.jsonl
+      metrics/${item.dataset}.yaml
+    deps:
+      - data/raw/${item.dataset}.jsonl
+      - preds/${item.dataset}.jsonl
+      - ai_papers/evaluate.py
+    params:
+      - evaluate
+    metrics:
+      - metrics/${item.dataset}.yaml:
+          cache: False

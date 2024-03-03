@@ -1,0 +1,5 @@
+model: gpt2
+prompt: baseline
+
+evaluate:
+  precision: 5

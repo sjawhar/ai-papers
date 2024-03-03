@@ -7,13 +7,13 @@ import click
 import jinja2
 import jsonlines
 import torch.cuda
+import tqdm
 import transformers
 
 if TYPE_CHECKING:
-    from transformers.modeling_outputs import BaseModelOutput
+    from transformers.modeling_outputs import CausalLMOutput
 
 _QUESTION = "Is this paper AI-relevant?"
-_DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 @click.command()
@@ -41,37 +41,41 @@ def main(
     model_dir: pathlib.Path,
     output_file: pathlib.Path,
 ):
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    click.echo(f"Using device: {device}")
+
+    click.echo(f"Loading model from {model_dir}")
     model: transformers.GPT2LMHeadModel = transformers.GPT2LMHeadModel.from_pretrained(
         model_dir
-    ).to(_DEVICE)
+    ).to(device)
     tokenizer: transformers.GPT2Tokenizer = transformers.GPT2Tokenizer.from_pretrained(
         model_dir
     )
+
+    click.echo(f"Using prompt template {prompt_file}")
     prompt_template = jinja2.Template(prompt_file.read_text())
     responses = []
     with jsonlines.open(data_file) as reader:
-        for prompt_data in reader:
-            title, _, abstract = prompt_data["text"].partition(".")
+        for prompt_data in tqdm.tqdm(reader):
+            title, _, abstract = str(prompt_data["text"]).partition(".")
             prompt = prompt_template.render(
-                title=title, abstract=abstract, question=_QUESTION
+                title=title.strip(), abstract=abstract.strip(), question=_QUESTION
             )
-            input_ids = tokenizer.encode(prompt, return_tensors="pt", padding=False).to(
-                _DEVICE
+            inputs = tokenizer(prompt, return_tensors="pt")
+            outputs: CausalLMOutput = model(
+                **{k: v.to(model.device) for k, v in inputs.items()}
             )
-            output_ids = model.generate(
-                input_ids, attention_mask=torch.ones_like(input_ids), max_new_tokens=1
-            )
-            output = tokenizer.decode(
-                output_ids[0, -1].to("cpu"), skip_special_tokens=True
-            )
-            output = {"yes": True, "no": False}.get(
-                output.strip().lower(), float("nan")
-            )
-            responses.append({"label": output})
+            logits = outputs.logits[0, -1].to("cpu")
+            output = tokenizer.decode(logits.argmax(), skip_special_tokens=True)
+            label = {"yes": True, "no": False}.get(output.strip().lower(), float("nan"))
+            responses.append({"label": label, "output": output})
 
+    click.echo(f"Writing responses to {output_file}")
     output_file.parent.mkdir(exist_ok=True, parents=True)
-    with jsonlines.open(output_file, "w") as writer:
+    with jsonlines.open(output_file, mode="w", compact=True, sort_keys=True) as writer:
         writer.write_all(responses)
+
+    click.echo("Done!")
 
 
 if __name__ == "__main__":
