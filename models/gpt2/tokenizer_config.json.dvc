@@ -1,0 +1,12 @@
+md5: 6ed2355de07e2570f3054ef7885b37f3
+frozen: true
+deps:
+- path: tokenizer_config.json
+  repo:
+    url: https://huggingface.co/openai-community/gpt2
+    rev_lock: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+outs:
+- md5: 6af5a714e92776714077373bb123f1f0
+  size: 26
+  hash: md5
+  path: tokenizer_config.json

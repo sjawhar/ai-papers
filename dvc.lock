@@ -1,0 +1,270 @@
+schema: '2.0'
+stages:
+  test:
+    cmd: python ai_papers/test.py data/raw/test.jsonl prompts/baseline.txt models/gpt2
+      preds/gpt2/baseline.jsonl
+    deps:
+    - path: data/raw/test.jsonl
+      hash: md5
+      md5: 394eb9be16db05a26fc546fe92ee792b
+      size: 506288
+    - path: models/gpt2
+      hash: md5
+      md5: 76a8161fc294384c3209836fbc9da1f4.dir
+      size: 550961491
+      nfiles: 12
+    - path: prompts/baseline.txt
+      hash: md5
+      md5: 46f57b44f71c20954e3ce4405746b527
+      size: 237
+    outs:
+    - path: preds/gpt2/baseline.jsonl
+      hash: md5
+      md5: a90ada95fddaa1e5a0c30fcf3362490f
+      size: 8012
+  generate@train:
+    cmd: python ai_papers/generate.py --params-file=params.yaml --examples-file=data/processed/examples.jsonl
+      data/processed/train.jsonl prompts/baseline.txt models/gpt2 preds/train.jsonl
+    deps:
+    - path: ai_papers/generate.py
+      hash: md5
+      md5: eb2b37af9750e8d69baf2d8a9ee319de
+      size: 5778
+    - path: data/processed/examples.jsonl
+      hash: md5
+      md5: 5d8bb8afef27d3a70d7005591ad37ab9
+      size: 1627
+    - path: data/processed/train.jsonl
+      hash: md5
+      md5: 0aec493393916c8ad820a123c3a89535
+      size: 497491
+    - path: models/gpt2
+      hash: md5
+      md5: 76a8161fc294384c3209836fbc9da1f4.dir
+      size: 550961491
+      nfiles: 12
+    - path: prompts/baseline.txt
+      hash: md5
+      md5: 84eeca4e68a7546ba05439b0878369d5
+      size: 204
+    params:
+      params.yaml:
+        answers:
+          positive: Yes
+          negative: No
+        generate:
+          instruction: 'Classify the following examples based on whether they are
+            AI-relevant or not:'
+          model: gpt2
+          prompt: baseline
+          stop_token: \n
+    outs:
+    - path: preds/train.jsonl
+      hash: md5
+      md5: b8cf9c2526316362139be25a3dfff39b
+      size: 16500
+  generate@dev:
+    cmd: python ai_papers/generate.py --params-file=params.yaml --examples-file=data/processed/examples.jsonl
+      data/processed/dev.jsonl prompts/baseline.txt models/gpt2 preds/dev.jsonl
+    deps:
+    - path: ai_papers/generate.py
+      hash: md5
+      md5: eb2b37af9750e8d69baf2d8a9ee319de
+      size: 5778
+    - path: data/processed/dev.jsonl
+      hash: md5
+      md5: d8967691f1246d01bab623e6461724ee
+      size: 520924
+    - path: data/processed/examples.jsonl
+      hash: md5
+      md5: 5d8bb8afef27d3a70d7005591ad37ab9
+      size: 1627
+    - path: models/gpt2
+      hash: md5
+      md5: 76a8161fc294384c3209836fbc9da1f4.dir
+      size: 550961491
+      nfiles: 12
+    - path: prompts/baseline.txt
+      hash: md5
+      md5: 84eeca4e68a7546ba05439b0878369d5
+      size: 204
+    params:
+      params.yaml:
+        answers:
+          positive: Yes
+          negative: No
+        generate:
+          instruction: 'Classify the following examples based on whether they are
+            AI-relevant or not:'
+          model: gpt2
+          prompt: baseline
+          stop_token: \n
+    outs:
+    - path: preds/dev.jsonl
+      hash: md5
+      md5: cf195ead7571d18213e72442520e46f5
+      size: 16500
+  generate@test:
+    cmd: python ai_papers/generate.py --params-file=params.yaml --examples-file=data/processed/examples.jsonl
+      data/processed/test.jsonl prompts/baseline.txt models/gpt2 preds/test.jsonl
+    deps:
+    - path: ai_papers/generate.py
+      hash: md5
+      md5: eb2b37af9750e8d69baf2d8a9ee319de
+      size: 5778
+    - path: data/processed/examples.jsonl
+      hash: md5
+      md5: 5d8bb8afef27d3a70d7005591ad37ab9
+      size: 1627
+    - path: data/processed/test.jsonl
+      hash: md5
+      md5: 0c6959845f7d1e54b1acf6876d8dba8c
+      size: 490468
+    - path: models/gpt2
+      hash: md5
+      md5: 76a8161fc294384c3209836fbc9da1f4.dir
+      size: 550961491
+      nfiles: 12
+    - path: prompts/baseline.txt
+      hash: md5
+      md5: 84eeca4e68a7546ba05439b0878369d5
+      size: 204
+    params:
+      params.yaml:
+        answers:
+          positive: Yes
+          negative: No
+        generate:
+          instruction: 'Classify the following examples based on whether they are
+            AI-relevant or not:'
+          model: gpt2
+          prompt: baseline
+          stop_token: \n
+    outs:
+    - path: preds/test.jsonl
+      hash: md5
+      md5: 21eeaad80073211b92ba24e87489b5db
+      size: 16500
+  evaluate@train:
+    cmd: python ai_papers/evaluate.py --params-file=params.yaml data/processed/train.jsonl
+      preds/train.jsonl metrics/train.yaml
+    deps:
+    - path: ai_papers/evaluate.py
+      hash: md5
+      md5: cd4ae8c117882b1c7eb94e05e17001dd
+      size: 1881
+    - path: data/processed/train.jsonl
+      hash: md5
+      md5: 0aec493393916c8ad820a123c3a89535
+      size: 497491
+    - path: preds/train.jsonl
+      hash: md5
+      md5: b8cf9c2526316362139be25a3dfff39b
+      size: 16500
+    params:
+      params.yaml:
+        evaluate:
+          precision: 5
+    outs:
+    - path: metrics/train.yaml
+      hash: md5
+      md5: a482989a556f961e49d396121b7b05cf
+      size: 58
+  evaluate@dev:
+    cmd: python ai_papers/evaluate.py --params-file=params.yaml data/processed/dev.jsonl
+      preds/dev.jsonl metrics/dev.yaml
+    deps:
+    - path: ai_papers/evaluate.py
+      hash: md5
+      md5: cd4ae8c117882b1c7eb94e05e17001dd
+      size: 1881
+    - path: data/processed/dev.jsonl
+      hash: md5
+      md5: d8967691f1246d01bab623e6461724ee
+      size: 520924
+    - path: preds/dev.jsonl
+      hash: md5
+      md5: cf195ead7571d18213e72442520e46f5
+      size: 16500
+    params:
+      params.yaml:
+        evaluate:
+          precision: 5
+    outs:
+    - path: metrics/dev.yaml
+      hash: md5
+      md5: 3af6de224a5b399cc4c75226b98e5393
+      size: 59
+  process_data@train:
+    cmd: python ai_papers/process_data.py data/raw/train.jsonl data/processed/train.jsonl
+    deps:
+    - path: ai_papers/process_data.py
+      hash: md5
+      md5: 7670d5fe7833ff6dc4a89fd5bf228451
+      size: 1034
+    - path: data/raw/train.jsonl
+      hash: md5
+      md5: 69137282d82b058a556160d0d6f4ffce
+      size: 511322
+    outs:
+    - path: data/processed/train.jsonl
+      hash: md5
+      md5: 0aec493393916c8ad820a123c3a89535
+      size: 497491
+  process_data@dev:
+    cmd: python ai_papers/process_data.py data/raw/dev.jsonl data/processed/dev.jsonl
+    deps:
+    - path: ai_papers/process_data.py
+      hash: md5
+      md5: 7670d5fe7833ff6dc4a89fd5bf228451
+      size: 1034
+    - path: data/raw/dev.jsonl
+      hash: md5
+      md5: 5814c1b636812b06e8db5c2a4b591b01
+      size: 534753
+    outs:
+    - path: data/processed/dev.jsonl
+      hash: md5
+      md5: d8967691f1246d01bab623e6461724ee
+      size: 520924
+  process_data@test:
+    cmd: python ai_papers/process_data.py data/raw/test.jsonl data/processed/test.jsonl
+    deps:
+    - path: ai_papers/process_data.py
+      hash: md5
+      md5: 7670d5fe7833ff6dc4a89fd5bf228451
+      size: 1034
+    - path: data/raw/test.jsonl
+      hash: md5
+      md5: 394eb9be16db05a26fc546fe92ee792b
+      size: 506288
+    outs:
+    - path: data/processed/test.jsonl
+      hash: md5
+      md5: 0c6959845f7d1e54b1acf6876d8dba8c
+      size: 490468
+  make_examples:
+    cmd: python ai_papers/make_examples.py --params-file=params.yaml data/processed/train.jsonl
+      data/processed/examples.jsonl
+    deps:
+    - path: ai_papers/make_examples.py
+      hash: md5
+      md5: 1fe9d4e649e054cb4dff0db2c6babc43
+      size: 2366
+    - path: data/processed/train.jsonl
+      hash: md5
+      md5: 0aec493393916c8ad820a123c3a89535
+      size: 497491
+    params:
+      params.yaml:
+        answers:
+          positive: Yes
+          negative: No
+        make_examples:
+          num_examples: 4
+          random_seed: 42
+    outs:
+    - path: data/processed/examples.jsonl
+      hash: md5
+      md5: 5d8bb8afef27d3a70d7005591ad37ab9
+      size: 1627

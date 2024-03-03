@@ -32,11 +32,6 @@ RUN apt-get update \
         jq \
  && rm -rf /var/lib/apt/lists/*
 
-COPY --from=packages /source/requirements.txt /tmp/requirements.txt
-RUN pip install \
-    --no-cache-dir \
-    --requirement /tmp/requirements.txt
-
 FROM cpu AS gpu
 
 ARG CUDA_DISTRO=ubuntu2204
@@ -57,6 +52,11 @@ ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
 FROM ${AI_PAPERS_DEVICE} AS base
+
+COPY --from=packages /source/requirements.txt /tmp/requirements.txt
+RUN pip install \
+    --no-cache-dir \
+    --requirement /tmp/requirements.txt
 
 ARG USERNAME=ai-papers
 ARG UID=1000

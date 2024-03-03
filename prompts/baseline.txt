@@ -1,0 +1,9 @@
+{{instruction}}
+--{% for example in examples %}
+Title: {{ example.title }}
+Abstract: {{ example.abstract }}
+Answer: {{ example.answer }}
+--{% endfor %}
+Title: {{ title }}
+Abstract: {{ abstract }}
+Answer:
