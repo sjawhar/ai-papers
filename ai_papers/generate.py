@@ -15,39 +15,42 @@ if TYPE_CHECKING:
     from transformers.modeling_outputs import CausalLMOutput
 
 
-def _generate_in_chunks(
+def _generate_chunked(
     model: transformers.PreTrainedModel,
     tokenizer: transformers.PreTrainedTokenizer,
     prompt: str,
     max_new_tokens: int,
     stop_token: str | None = None,
 ):
-    input_ids: torch.Tensor = tokenizer.encode(prompt, return_tensors="pt").to(
-        model.device
+    input_ids_flat: torch.Tensor = tokenizer.encode(prompt, return_tensors="pt")
+    max_length = model.config.max_position_embeddings
+    chunk_size = max_length - max_new_tokens
+    chunks = tokenizer(
+        [
+            tokenizer.decode(
+                input_ids_flat[0, max(0, idx_chunk - chunk_size) : idx_chunk]
+            )
+            for idx_chunk in range(input_ids_flat.size(1), 0, -chunk_size)
+        ][::-1],
+        padding=True,
+        return_tensors="pt",
     )
-    chunk_size = model.config.max_position_embeddings - max_new_tokens
-    chunks = [
-        input_ids[:, idx_chunk : idx_chunk + chunk_size]
-        for idx_chunk in range(0, input_ids.size(1), chunk_size)
-    ]
 
     past_key_values = None
-    for idx_chunk, chunk in enumerate(chunks):
-        with torch.no_grad():
-            if idx_chunk < len(chunks) - 1:
-                output_chunk: CausalLMOutput = model(
-                    chunk, past_key_values=past_key_values
-                )
-                past_key_values = output_chunk.past_key_values
-                continue
+    input_ids = chunks["input_ids"].unsqueeze(1).to(model.device)
+    attention_masks: torch.Tensor = (
+        chunks["attention_mask"].unsqueeze(1).to(model.device)
+    )
+    for input_ids_chunk, attention_mask_chunk in zip(input_ids, attention_masks):
+        outputs: CausalLMOutput = model(
+            input_ids=input_ids_chunk,
+            attention_mask=attention_mask_chunk,
+            past_key_values=past_key_values,
+        )
+        past_key_values = outputs.past_key_values
 
-            output_ids = model.generate(
-                chunk,
-                max_new_tokens=max_new_tokens,
-                do_sample=False,
-            )
-
-    return _get_response(tokenizer, output_ids, input_ids, stop_token)
+    output_ids = outputs.logits[:, -1].argmax(1).unsqueeze(1)
+    return _get_response(tokenizer, output_ids, input_ids_flat, stop_token)
 
 
 def _get_response(
@@ -138,7 +141,8 @@ def main(
 
     click.echo(f"Loading model from {model_dir}")
     tokenizer: transformers.GPT2Tokenizer = transformers.GPT2Tokenizer.from_pretrained(
-        model_dir
+        model_dir,
+        padding_side="left",
     )
     tokenizer.pad_token = tokenizer.eos_token
     model: transformers.GPT2LMHeadModel = (

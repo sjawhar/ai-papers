@@ -1,9 +1,9 @@
 answers:
-  positive: "Yes"
-  negative: "No"
+  positive: "AI"
+  negative: "Not AI"
 
 make_examples:
-  num_examples: 4
+  num_examples: 2
   random_seed: 42
 
 generate:
