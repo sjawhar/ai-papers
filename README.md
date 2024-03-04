@@ -10,12 +10,12 @@ My goal with this project is to strike a balance between demonstrating strong NL
 
 ## Worklog
 02 Mar
-1310-1429 - Repo setup
-1816-2013 - Task 1 - Test stage
+* 1310-1429 - Repo setup
+* 1816-2013 - Task 1 - Test stage
 
 03 Mar
-1135-1536 - Task 1 - Evaluation and few-shot prompt
-1824-2049 - Task 2 - Experiments
+* 1135-1536 - Task 1 - Evaluation and few-shot prompt
+* 1824-2049 - Task 2 - Experiments
 
 
 ## References
