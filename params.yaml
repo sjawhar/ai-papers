@@ -1,9 +1,9 @@
 answers:
-  positive: "AI"
-  negative: "Not AI"
+  positive: AI
+  negative: Not AI
 
 make_examples:
-  num_examples: 4
+  num_examples: 0
   random_seed: 42
 
 generate:
@@ -12,6 +12,6 @@ generate:
     AI-relevant or not:
   model: gpt2
   prompt: baseline
-  stop_token: '\n'
+  stop_token: \n
 evaluate:
   precision: 5
