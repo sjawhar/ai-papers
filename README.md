@@ -15,6 +15,9 @@ My goal with this project is to strike a balance between demonstrating strong NL
 
 03 Mar
 1135-1536 - Task 1 - Evaluation and few-shot prompt
+1824-2049 - Task 2 - Experiments
+
 
 ## References
+- https://python.langchain.com/docs/integrations/llms/huggingface_pipelines
 - Reppert, J., Rachbach, B., George, C., Stebbing, L., Byun, J., Appleton, M., & Stuhlmüller, A. (2023). Iterated decomposition: Improving science q&a by supervising reasoning processes. _arXiv preprint arXiv:2301.01751_.

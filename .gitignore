@@ -161,3 +161,4 @@ cython_debug/
 *.code-workspace
 /notebooks
 dvc_plots
+diff_report.md
