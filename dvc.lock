@@ -28,8 +28,8 @@ stages:
     deps:
     - path: ai_papers/generate.py
       hash: md5
-      md5: eb2b37af9750e8d69baf2d8a9ee319de
-      size: 5778
+      md5: 26604a110b52321690c263692a511c85
+      size: 6027
     - path: data/processed/examples.jsonl
       hash: md5
       md5: 5d8bb8afef27d3a70d7005591ad37ab9
@@ -53,8 +53,9 @@ stages:
           positive: Yes
           negative: No
         generate:
-          instruction: 'Classify the following examples based on whether they are
-            AI-relevant or not:'
+          instruction: Use the title and abstract of the following academic paper
+            to decide if it is about artificial intelligence or not. Output "Yes"
+            if it is about AI, and "No" it it is not.
           model: gpt2
           prompt: baseline
           stop_token: \n
@@ -69,8 +70,8 @@ stages:
     deps:
     - path: ai_papers/generate.py
       hash: md5
-      md5: eb2b37af9750e8d69baf2d8a9ee319de
-      size: 5778
+      md5: 26604a110b52321690c263692a511c85
+      size: 6027
     - path: data/processed/dev.jsonl
       hash: md5
       md5: d8967691f1246d01bab623e6461724ee
@@ -94,15 +95,16 @@ stages:
           positive: Yes
           negative: No
         generate:
-          instruction: 'Classify the following examples based on whether they are
-            AI-relevant or not:'
+          instruction: Use the title and abstract of the following academic paper
+            to decide if it is about artificial intelligence or not. Output "Yes"
+            if it is about AI, and "No" it it is not.
           model: gpt2
           prompt: baseline
           stop_token: \n
     outs:
     - path: preds/dev.jsonl
       hash: md5
-      md5: cf195ead7571d18213e72442520e46f5
+      md5: e0fecd29aec8c809808edc0426dc218e
       size: 16500
   generate@test:
     cmd: python ai_papers/generate.py --params-file=params.yaml --examples-file=data/processed/examples.jsonl
@@ -110,8 +112,8 @@ stages:
     deps:
     - path: ai_papers/generate.py
       hash: md5
-      md5: eb2b37af9750e8d69baf2d8a9ee319de
-      size: 5778
+      md5: 26604a110b52321690c263692a511c85
+      size: 6027
     - path: data/processed/examples.jsonl
       hash: md5
       md5: 5d8bb8afef27d3a70d7005591ad37ab9
@@ -135,15 +137,16 @@ stages:
           positive: Yes
           negative: No
         generate:
-          instruction: 'Classify the following examples based on whether they are
-            AI-relevant or not:'
+          instruction: Use the title and abstract of the following academic paper
+            to decide if it is about artificial intelligence or not. Output "Yes"
+            if it is about AI, and "No" it it is not.
           model: gpt2
           prompt: baseline
           stop_token: \n
     outs:
     - path: preds/test.jsonl
       hash: md5
-      md5: 21eeaad80073211b92ba24e87489b5db
+      md5: 666d8b8cf3a2e344ec4a31f6dec73ddb
       size: 16500
   evaluate@train:
     cmd: python ai_papers/evaluate.py --params-file=params.yaml data/processed/train.jsonl
@@ -184,7 +187,7 @@ stages:
       size: 520924
     - path: preds/dev.jsonl
       hash: md5
-      md5: cf195ead7571d18213e72442520e46f5
+      md5: e0fecd29aec8c809808edc0426dc218e
       size: 16500
     params:
       params.yaml:
@@ -193,7 +196,7 @@ stages:
     outs:
     - path: metrics/dev.yaml
       hash: md5
-      md5: 3af6de224a5b399cc4c75226b98e5393
+      md5: 48bb54039ca2064e7b4edc90c8e6e82f
       size: 59
   process_data@train:
     cmd: python ai_papers/process_data.py data/raw/train.jsonl data/processed/train.jsonl

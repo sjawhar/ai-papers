@@ -8,8 +8,9 @@ make_examples:
 
 generate:
   instruction: >-
-    Classify the following examples based on whether they are
-    AI-relevant or not:
+    Use the title and abstract of the following academic paper to decide
+    if it is about artificial intelligence or not. Output "Yes" if it is
+    about AI, and "No" it it is not.
   model: gpt2
   prompt: baseline
   stop_token: '\n'
