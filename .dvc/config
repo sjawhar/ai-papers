@@ -1,0 +1,6 @@
+[core]
+    remote = ai-papers-public
+['remote "ai-papers-public"']
+    url = https://thecybermonk-ai-papers-dvc.s3.amazonaws.com
+['remote "ai-papers-s3"']
+    url = s3://thecybermonk-ai-papers-dvc
