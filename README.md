@@ -1,4 +1,4 @@
-# Elicit Takehome: AI Papers
+# AI Paper Classifier
 
 ## Project Outline
 My goal with this project is to strike a balance between demonstrating strong NLP fundamentals, proficiency with modern tech and tools, and a meta-level demonstration of how I structure projects and ML experimentation. Therefore, my priorites are as follows:
